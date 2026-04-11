@@ -3,6 +3,11 @@ import { z } from 'zod';
 export const DEFAULT_TZ = 'Asia/Manila';
 export const DEFAULT_TZ_OFFSET = '+08:00';
 
+/** Today's date as YYYY-MM-DD in Asia/Manila, regardless of server TZ. */
+export function todayInManila(): string {
+  return new Date().toLocaleDateString('en-CA', { timeZone: DEFAULT_TZ });
+}
+
 /** RFC3339 with mandatory timezone — used on create_events strict schema. */
 export const datetimeWithTz = z
   .string()

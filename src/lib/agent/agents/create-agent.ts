@@ -1,11 +1,12 @@
 import { ToolLoopAgent } from 'ai';
 import { anthropic } from '@ai-sdk/anthropic';
 import { allTools } from '../shared-tools';
+import { todayInManila } from '../utils';
 
 export function createCreateAgent(reqHeaders: Headers) {
   return new ToolLoopAgent({
     model: anthropic('claude-3-haiku-20240307'),
-    instructions: `You are a friendly calendar assistant helping the user CREATE a new event. Today is ${new Date().toISOString().split('T')[0]}. Timezone: Asia/Manila (UTC+8).
+    instructions: `You are a friendly calendar assistant helping the user CREATE a new event. Today is ${todayInManila()}. Timezone: Asia/Manila (UTC+8).
 
 Your only job here is to collect event details and create the event. Follow these rules:
 
