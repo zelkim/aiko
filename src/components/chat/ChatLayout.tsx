@@ -52,6 +52,14 @@ export function ChatLayout({
 
   const [input, setInput] = useState("");
   const scrollRef = useRef<HTMLDivElement>(null);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+  const autoResize = () => {
+    const el = textareaRef.current;
+    if (!el) return;
+    el.style.height = 'auto';
+    el.style.height = Math.min(el.scrollHeight, 160) + 'px';
+  };
 
   useEffect(() => {
     if (scrollRef.current) {
@@ -76,6 +84,21 @@ export function ChatLayout({
     if (!input.trim() || isWorking) return;
     sendMessage({ text: input });
     setInput("");
+    if (textareaRef.current) {
+      textareaRef.current.style.height = 'auto';
+    }
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      if (!input.trim() || isWorking) return;
+      sendMessage({ text: input });
+      setInput("");
+      if (textareaRef.current) {
+        textareaRef.current.style.height = 'auto';
+      }
+    }
   };
 
   return (
@@ -391,29 +414,37 @@ export function ChatLayout({
       }}>
         <form
           onSubmit={handleSubmit}
-          style={{ display: 'flex', gap: 8, maxWidth: 672, margin: '0 auto', alignItems: 'center' }}
+          style={{ display: 'flex', gap: 8, maxWidth: 672, margin: '0 auto', alignItems: 'flex-end' }}
         >
-          <input
+          <textarea
+            ref={textareaRef}
             value={input}
-            onChange={(e) => setInput(e.target.value)}
+            rows={1}
+            onChange={(e) => { setInput(e.target.value); autoResize(); }}
+            onKeyDown={handleKeyDown}
             placeholder="say something to aiko ✦"
             disabled={isWorking}
             style={{
               flex: 1,
               padding: '10px 18px',
-              borderRadius: 999,
+              borderRadius: 22,
               border: '1.5px solid var(--border)',
               background: 'var(--input)',
               color: 'var(--foreground)',
               fontSize: '0.875rem',
+              fontFamily: 'var(--font-sans)',
               outline: 'none',
+              resize: 'none',
+              lineHeight: 1.55,
+              overflow: 'hidden',
               transition: 'border-color 0.15s',
             }}
-            onFocus={(e) => { (e.target as HTMLInputElement).style.borderColor = 'var(--primary)'; }}
-            onBlur={(e) => { (e.target as HTMLInputElement).style.borderColor = 'var(--border)'; }}
+            onFocus={(e) => { e.target.style.borderColor = 'var(--primary)'; }}
+            onBlur={(e) => { e.target.style.borderColor = 'var(--border)'; }}
           />
           <button
             type="submit"
+            suppressHydrationWarning
             disabled={isWorking || !input.trim()}
             style={{
               width: 40, height: 40,

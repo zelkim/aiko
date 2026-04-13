@@ -1,12 +1,14 @@
 import { ToolLoopAgent } from 'ai';
 import { anthropic } from '@ai-sdk/anthropic';
 import { allTools } from '../shared-tools';
-import { todayInManila } from '../utils';
+import { todayInManila, weekContext } from '../utils';
 
 export function createEditAgent(reqHeaders: Headers) {
   return new ToolLoopAgent({
     model: anthropic('claude-3-haiku-20240307'),
     instructions: `You are a friendly calendar assistant helping the user EDIT an existing event. Today is ${todayInManila()}. Timezone: Asia/Manila (UTC+8).
+
+${weekContext()}
 
 Rules:
 1. If you already have the event ID from a prior create_events result in this conversation, use it directly — do NOT call list_events.

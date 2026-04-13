@@ -149,7 +149,7 @@ export function EventDisplayCard({
   const timedEvents = events.filter((e) => !!e.start.dateTime);
   const allDayEvents = events.filter((e) => !e.start.dateTime && !!e.start.date);
 
-  const days = computeDays(events);
+  const days = computeDays(events).slice(0, 7);
 
   // Compute scroll time from earliest timed event
   const firstDt = timedEvents

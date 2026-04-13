@@ -1,12 +1,14 @@
 import { ToolLoopAgent } from 'ai';
 import { anthropic } from '@ai-sdk/anthropic';
 import { allTools } from '../shared-tools';
-import { todayInManila } from '../utils';
+import { todayInManila, weekContext } from '../utils';
 
 export function createDeleteAgent(reqHeaders: Headers) {
   return new ToolLoopAgent({
     model: anthropic('claude-3-haiku-20240307'),
     instructions: `You are a friendly calendar assistant helping the user DELETE a calendar event. Today is ${todayInManila()}. Timezone: Asia/Manila (UTC+8).
+
+${weekContext()}
 
 Rules:
 1. NEVER ask the user for an event ID. Always call list_events to find it.

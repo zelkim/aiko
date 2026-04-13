@@ -1,7 +1,7 @@
 import { ToolLoopAgent } from 'ai';
 import { anthropic } from '@ai-sdk/anthropic';
 import { allTools } from '../shared-tools';
-import { todayInManila } from '../utils';
+import { todayInManila, weekContext } from '../utils';
 
 const CAPABILITY_CONTEXT = `
 This is a Google Calendar chatbot. Here is what it can do:
@@ -22,6 +22,8 @@ export function createChatAgent(reqHeaders: Headers) {
   return new ToolLoopAgent({
     model: anthropic('claude-3-haiku-20240307'),
     instructions: `You are a helpful assistant for a Google Calendar chatbot. Today is ${todayInManila()}. Timezone: Asia/Manila (UTC+8).
+
+${weekContext()}
 
 You have access to the following capability context:
 
