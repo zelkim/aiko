@@ -71,7 +71,7 @@ export async function classifyIntent(messages: any[]): Promise<ClassifiedIntent>
   // LLM classification for all other intents
   const recentActivity = buildRecentActivityContext(messages);
   const { object } = await generateObject({
-    model: anthropic('claude-3-haiku-20240307'),
+    model: anthropic('claude-haiku-4-5-20251001'),
     schema: z.object({
       intent: z.enum(['CREATE', 'EDIT', 'DELETE', 'CHAT']),
     }),

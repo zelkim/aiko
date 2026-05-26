@@ -20,7 +20,7 @@ All events are created in the Asia/Manila timezone (UTC+8).
 
 export function createChatAgent(reqHeaders: Headers) {
   return new ToolLoopAgent({
-    model: anthropic('claude-3-haiku-20240307'),
+    model: anthropic('claude-haiku-4-5-20251001'),
     instructions: `You are a helpful assistant for a Google Calendar chatbot. Today is ${todayInManila()}. Timezone: Asia/Manila (UTC+8).
 
 ${weekContext()}
